@@ -4,6 +4,9 @@ This is an example program of a counter program on Solana.
 
 Here are the files to check:
 - `programs/counter/lib.rs`: Solana Program Implementation
+- `tests/counter.ts`: Testcase to call the program
+- `Anchor.toml`: File to modify if you want to test the program on Solana Devnet
+- `app`: Frontend App to test your program
 
 ## Overview
 
@@ -19,8 +22,9 @@ Using a simple Counter implementation, you will explore the basic level of how a
 4. Creating Unique Account Addresses
 5. Creating an Error Message
 
-
 ## Usage & Development
+
+The Smart Contract has been deployed to **Solana Devnet** with the address: `Hx8vRhUw1Rg7nSRp7dEkpXTpwpuKFJCdHcEqinsgRKjy`. Anyone can interact using this Solana Program to test it out.
 
 Open [SETUP.MD](./SETUP.MD) for more details on how to deploy or use the Solana Program
 
@@ -37,10 +41,13 @@ Note that a function in Solana needs two part:
 
 **- The function call**
 Similar to how a function works, you need to specify the functions and the logic:
-```
+```rust
+// This is an example function on Solana
 pub fn add_public(ctx: Context<AddPublic>)->Result<()>{
     let public_counter = &mut ctx.accounts.public_counter;
+    // Add a Transaction Message
     msg!("Public Counter Value for added to {}", public_counter.value);
+    // Add the counter value by 1
     public_counter.value += 1;
     Ok(())
 }
@@ -50,7 +57,8 @@ This function will print a message during the transaction, and also increase the
 
 **- The Account Context**
 An extra additional step is that you need to add an account context structure to pass in all the accounts that's needed in the transaction:
-```
+```rust
+// This is an Account Context for the add_public() function
 #[derive(Accounts)]
 pub struct AddPublic<'info> {
     #[account(
@@ -73,7 +81,8 @@ More details will be covered in next steps. But here, you will need to pass in *
 
 This is an example of a Solana Account called `PersonalCounter` that holds two value, a `Pubkey` and a `u64` number. The account stores the PublicKey/Address of the owner that's authorized to change the Counter's value
 
-```
+```rust
+// This is an Account in Solana
 #[account]
 pub struct PersonalCounter {
     pub owner: Pubkey,
@@ -99,7 +108,7 @@ Once you define the account, you can start creating it when calling your Solana 
 **Example Usage:**
 
 This account context *(discussed in topic 1)* initializes a `PublicCounter` account if it hasn't existed.
-```
+```rust
 #[derive(Accounts)]
 pub struct AddPublic<'info> {
     #[account(
@@ -123,19 +132,24 @@ Note that:
 - `bump`: not important yet, but you still need to include it if you specify the `seeds`
 
 If you want to use `init_if_needed`, make sure the **feature** has been included in the dependencies at `progarms/counter/Cargo.toml`
-```
+```rust
 [dependencies]
 anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
 ```
 
 ## 4. Creating Unique Account Addresses
 
-Every account in Solana needs a unique address (e.g. my wallet address is different to your wallet address)
+**Every account in Solana needs a unique address** (e.g. my wallet address is different to your wallet address)
 
-Hence, you will need to make each account initialized in your Solana Program **UNIQUE** by passing the **seeds**. 
+Hence, there will be scenarios when you need to make each account initialized in your Solana Program **UNIQUE** by passing the **seeds**. For example, to store the user data in your program, you need to initialize a unique address for each individual users.
 
-You can see the example in `AddPersonal` context where each wallet which pass in `user.key()` (the public key of the signer) as one of the seeds. This make sure each user will receive a unique `PersonalCounter` account addresses as each user has their own unique address.
+You can see the example in `AddPersonal` context where each wallet which pass in `user.key()` (the public key of the signer) as one of the seeds. This make sure each user will receive a unique `PersonalCounter` account addresses as each user has their own unique address. 
+```rust
+// Example of seeds that generate one same address for every user
+seeds=[b"public_counter".as_ref()],
 ```
+```rust
+// Example of seeds that generate multiple different addresseses for each user
 seeds=[b"personal_counter".as_ref(), user.key().as_ref()],
 ```
 
@@ -148,7 +162,7 @@ In the code, we also initializes custom error messages that can be passed inside
 When a transaction is reverted, a user will not be able to add the transaction to the network.
 
 Example Solana Program Error Codes:
-```
+```rust
 #[error_code]
 pub enum Errors {
     #[msg("Invalid owner")]
@@ -163,7 +177,8 @@ pub enum Errors {
 
 How to implement it in your program:
 
-```
+```rust
+// This code will raise the InvalidOwner error if the checking fails
 require!(public_counter.owner == ctx.accounts.user.key(), Errors::InvalidOwner);
 ```
 
