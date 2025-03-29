@@ -8,6 +8,10 @@ Here are the files to check:
 - `Anchor.toml`: File to modify if you want to test the program on Solana Devnet
 - `app`: Frontend App to test your program
 
+Links:
+- [Deployed Program](https://explorer.solana.com/address/Hx8vRhUw1Rg7nSRp7dEkpXTpwpuKFJCdHcEqinsgRKjy?cluster=devnet)
+- [Frontend Example](https://solana-counter-example.vercel.app/)
+
 ## Overview
 
 This code is a default template for any developers to start building a Solana Program.
