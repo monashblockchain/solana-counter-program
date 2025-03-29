@@ -88,6 +88,7 @@ cluster = "devnet"
 
 Prerequisites:
 - Node.js & npm (for frontend or JS scripts)
+- Web3 Wallet (e.g. [Phantom](https://phantom.com))
 
 ### 2.1 Clone the Repo (if not done in step1 yet)
 ```bash
@@ -104,5 +105,25 @@ cd app
 ```bash
 npm install
 ```
+
+### 2.3 Run the App on your Local Device
+```bash
+npm run dev
+```
+
+Now your app is hosted on [http://localhost:3000](http://localhost:3000) and you can test it out!
+
+![Frontend](assets/frontend.png)
+
+### (Extra) Change the program to your own
+
+If you completed the **Step1 process** to deploy your own program, you can change the code to interact with your own smart contract.
+
+Copy the `idl.json` file from `target/idl/idl.json` then change the contents in `app/lib/idl.json`.
+
+Then, copy the `counter.ts` file from `target/types/counter.ts` then change the contents in `app/lib/counter.ts`
+
+This will automatically change the configurations to interact with your Smart Contract instead of the default contract.
+
 
 
