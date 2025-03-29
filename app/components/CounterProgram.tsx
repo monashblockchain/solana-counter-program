@@ -31,7 +31,7 @@ export default function CounterProgram(){
     const [publicCounterValue, setPublicCounterValue] = useState<string| null>(null);
     const [personalCounterValue, setPersonalCounterValue] = useState<string | null>(null);
 
-    
+
     useEffect(() => {
         fetchPublicCounter();
         fetchPersonalCounter();
@@ -160,6 +160,21 @@ export default function CounterProgram(){
     return(
         <div className="text-center mt-8">
             <div className="flex flex-col items-center justify-center mb-8">
+            <div className="mb-6">
+                <p className="text-lg font-semibold text-gray-300">Program Address:</p>
+                <p className="text-sm font-mono text-gray-400">{programId.toString()}</p>
+                <div className="mt-4 mb-4">
+                    <a
+                        href={`https://explorer.solana.com/address/${programId.toString()}?cluster=devnet`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
+                    >
+                        View Program on Explorer
+                    </a>
+                </div>
+            </div>
+                
                 <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-6">
                     <Card className="px-6 py-4 bg-gray-700 text-white rounded-lg shadow-lg max-w-sm text-center">
                         <div className="mt-4">

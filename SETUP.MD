@@ -23,7 +23,7 @@ git clone https://github.com/monashblockchain/solana-counter-program.git
 cd solana-counter-program
 ```
 
-### 1.2 Initialize a new 
+### 1.2 Initialize a new smart contract
 
 Then, initialize a new keypair for your Smart Contract. This will generate a Private Key and Public Key for the deployed Solana Program.
 
